@@ -1,0 +1,6 @@
+services:
+  web:
+    image: nginx
+    ports:
+    - "8080:8080" # Expose somes ports
+    - "5000:5000" # Expose somes ports
