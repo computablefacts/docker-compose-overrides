@@ -1,4 +1,4 @@
-name: 01-simple-ports
+name: 02-ports-override
 services:
   web:
     image: nginx
@@ -11,4 +11,4 @@ services:
         protocol: tcp
 networks:
   default:
-    name: 01-simple-ports_default
+    name: 02-ports-override_default
