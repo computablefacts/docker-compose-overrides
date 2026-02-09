@@ -8,13 +8,25 @@ def read_file(path: Path) -> str:
     return path.read_text(encoding="utf-8").rstrip()
 
 
+def load_description(case_dir: Path) -> str:
+    """
+    Load optional description.md.
+    Falls back to a default description if missing.
+    """
+    description_file = case_dir / "description.md"
+    if description_file.exists():
+        return read_file(description_file)
+
+    return (
+        "This case documents how Docker Compose merges configuration files "
+        "when multiple compose files are used."
+    )
+
+
 def generate_readme(case_dir: Path):
     case_name = case_dir.name
 
-    yaml_files = sorted(
-        f for f in case_dir.glob("*.yaml")
-        if f.name != "expected.yaml"
-    )
+    yaml_files = sorted(f for f in case_dir.glob("*.yaml") if f.name != "expected.yaml")
 
     if not (case_dir / "expected.yaml").exists():
         print(f"Skipping {case_name}: no expected.yaml")
@@ -25,20 +37,18 @@ def generate_readme(case_dir: Path):
         return
 
     # Ensure base file is first
-    yaml_files = (
-        [case_dir / "docker-compose.yaml"]
-        + [f for f in yaml_files if f.name != "docker-compose.yaml"]
-    )
+    yaml_files = [case_dir / "docker-compose.yaml"] + [
+        f for f in yaml_files if f.name != "docker-compose.yaml"
+    ]
 
     expected_file = case_dir / "expected.yaml"
+
+    description = load_description(case_dir)
 
     lines = []
     lines.append(f"# Case: {case_name}\n")
     lines.append("## Description\n")
-    lines.append(
-        "This case documents how Docker Compose merges configuration files "
-        "when multiple compose files are used.\n"
-    )
+    lines.append(description + "\n")
     lines.append("---\n")
 
     # Base + overrides

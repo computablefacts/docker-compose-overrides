@@ -85,11 +85,24 @@ docker compose -f docker-compose.yaml -f docker-compose.override.yaml config > e
 > Open `expected.yaml` and manually verify that the generated configuration
 > matches what you actually expect. This file acts as the source of truth.
 
-### 4. Run the Tests
+### 4. Add a description (optional)
+
+Add a `description.md` file to describe your case. This description will be
+used by the script which generate README.md for each case.
+
+### 5. Run the Tests
 
 Go back to the root of the repository and run the tests to ensure everything is
 green:
 
 ```bash
 pytest -v
+```
+
+### 6. Generate the README file
+
+From the root of the repository launch the script:
+
+```bash
+./generate-readmes.py
 ```
